@@ -180,9 +180,9 @@ func WithRouter(o *js.Object) *js.Object {
 
 func getRouterFunc(props gr.Props, funcName string) func(...interface{}) *js.Object {
 	if r, ok := props["router"]; ok && r != js.Undefined {
-		router := r.(map[string]interface{})
-		if fi, ok := router[funcName]; ok {
-			return fi.(func(...interface{}) *js.Object)
+		router := r.(*js.Object).Get(funcName).Interface()
+		if router != nil {
+			return router.(func(...interface{}) *js.Object)
 		} else {
 			panic(funcName + " not found")
 		}
